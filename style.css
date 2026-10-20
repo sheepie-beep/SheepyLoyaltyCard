@@ -1,0 +1,187 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: #292034;
+  font-family: monospace;
+}
+
+.loyalty-card {
+  width: min(95vw, 850px);
+  min-height: 450px;
+  padding: 30px 20px;
+
+  text-align: center;
+  color: #762f91;
+
+  background: linear-gradient(
+    120deg,
+    #d6d0d0,
+    #d6b7f4
+  );
+
+  border: 5px solid white;
+}
+
+/* LOGO */
+
+.logo {
+  display: block;
+  width: 230px;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto 25px;
+
+  image-rendering: pixelated;
+}
+
+/* HEADINGS */
+
+h2 {
+  margin: 0 0 15px;
+
+  font-size: clamp(13px, 2.5vw, 23px);
+  letter-spacing: 2px;
+}
+
+h3 {
+  margin: 0 0 25px;
+
+  font-size: clamp(12px, 2vw, 18px);
+  letter-spacing: 1px;
+}
+
+/* STAMP HEARTS */
+
+.stamp-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+
+  margin: 20px auto 30px;
+}
+
+.stamp {
+  position: relative;
+
+  width: 105px;
+  min-width: 0;
+  aspect-ratio: 1;
+
+  flex-shrink: 1;
+}
+
+.pink-heart {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.scratch-layer {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  cursor: crosshair;
+  touch-action: none;
+
+  image-rendering: pixelated;
+}
+
+/* FREE REWARD HEART */
+
+.reward {
+  width: 110px;
+  height: 90px;
+
+  margin: 20px auto;
+
+  display: grid;
+  place-items: center;
+
+  background: #d95390;
+  color: white;
+
+  font-size: 27px;
+  font-weight: bold;
+
+  clip-path: polygon(
+    20% 0%, 40% 0%, 40% 12%,
+    60% 12%, 60% 0%, 80% 0%,
+    80% 12%, 100% 12%, 100% 55%,
+    85% 55%, 85% 75%, 65% 75%,
+    50% 100%, 35% 75%, 15% 75%,
+    15% 55%, 0% 55%, 0% 12%,
+    20% 12%
+  );
+}
+
+/* DESCRIPTION */
+
+.description {
+  margin-top: 25px;
+
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+/* FOOTER */
+
+.site-footer {
+  width: min(95vw, 850px);
+
+  margin: 15px auto;
+  padding: 12px 20px;
+
+  text-align: center;
+  font-family: monospace;
+  font-size: 11px;
+
+  color: #bfa8d3;
+}
+
+.site-footer p {
+  margin: 5px 0;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .loyalty-card {
+    padding: 20px 10px;
+  }
+
+  .logo {
+    width: 180px;
+  }
+
+  .stamp-row {
+    gap: 5px;
+  }
+
+  .description {
+    font-size: 11px;
+  }
+
+  .site-footer {
+    font-size: 10px;
+  }
+}
