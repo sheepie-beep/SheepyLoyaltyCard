@@ -3,8 +3,11 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const { url, publishableKey } = window.LOYALTY_CONFIG;
 const supabase = createClient(url, publishableKey);
+
 const $ = id => document.getElementById(id);
-const status = message => { $('adminStatus').textContent = message; };
+const status = message => {
+  $('adminStatus').textContent = message;
+};
 const env = () => $('environment').value;
 
 let lastCode = '';
@@ -17,19 +20,22 @@ async function adminRequest(action, payload = {}) {
     throw new Error('Please sign in again.');
   }
 
-  const response = await fetch(`${url}/functions/v1/loyalty-admin`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': publishableKey,
-      'Authorization': `Bearer ${session.access_token}`
-    },
-    body: JSON.stringify({
-      action,
-      environment: env(),
-      ...payload
-    })
-  });
+  const response = await fetch(
+    `${url}/functions/v1/loyalty-admin`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': publishableKey,
+        'Authorization': `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({
+        action,
+        environment: env(),
+        ...payload
+      })
+    }
+  );
 
   const result = await response.json().catch(() => ({}));
 
@@ -54,7 +60,11 @@ function showLogin(loggedIn) {
 async function refresh() {
   status('Loading tickets...');
 
+  const currentEnvironment = env();
   const { tickets } = await adminRequest('list');
+
+  if (currentEnvironment !== env()) return;
+
   const list = $('ticketList');
   list.replaceChildren();
 
@@ -80,6 +90,76 @@ async function refresh() {
 
     item.append(heading, info);
 
+    const codeArea = document.createElement('div');
+    codeArea.style.margin = '10px 0';
+
+    const codeDisplay = document.createElement('p');
+    codeDisplay.textContent = 'Code: ••••••••••••';
+    codeDisplay.style.overflowWrap = 'anywhere';
+    codeDisplay.style.margin = '6px 0';
+
+    const showCode = document.createElement('button');
+    showCode.type = 'button';
+    showCode.textContent = '♡ Show Code';
+
+    const copyTicketCode = document.createElement('button');
+    copyTicketCode.type = 'button';
+    copyTicketCode.textContent = 'Copy Code';
+    copyTicketCode.style.marginLeft = '8px';
+    copyTicketCode.hidden = true;
+
+    let revealedCode = '';
+
+    showCode.addEventListener('click', async () => {
+      if (revealedCode) {
+        revealedCode = '';
+        codeDisplay.textContent = 'Code: ••••••••••••';
+        showCode.textContent = '♡ Show Code';
+        copyTicketCode.hidden = true;
+        return;
+      }
+
+      showCode.disabled = true;
+
+      try {
+        const result = await adminRequest('view_code', {
+          ticket_id: ticket.id
+        });
+
+        if (currentEnvironment !== env()) return;
+
+        revealedCode = result.code;
+        codeDisplay.textContent = 'Code: ' + revealedCode;
+        showCode.textContent = '♡ Hide Code';
+        copyTicketCode.hidden = false;
+        status('');
+
+      } catch (error) {
+        status(error.message);
+      } finally {
+        showCode.disabled = false;
+      }
+    });
+
+    copyTicketCode.addEventListener('click', async () => {
+      if (!revealedCode) return;
+
+      try {
+        await navigator.clipboard.writeText(revealedCode);
+        status('Customer code copied! ♡');
+      } catch {
+        status('Could not copy. Select the code manually.');
+      }
+    });
+
+    codeArea.append(
+      codeDisplay,
+      showCode,
+      copyTicketCode
+    );
+
+    item.append(codeArea);
+
     if (!ticket.reward_claimed && ticket.stamps_earned < 5) {
       const award = document.createElement('button');
       award.type = 'button';
@@ -93,17 +173,22 @@ async function refresh() {
         award.disabled = true;
 
         try {
-          await adminRequest('award', { ticket_id: ticket.id });
+          await adminRequest('award', {
+            ticket_id: ticket.id
+          });
+
           await refresh();
           status('Heart awarded! ♡');
-        } catch (e) {
-          status(e.message);
+
+        } catch (error) {
+          status(error.message);
           award.disabled = false;
         }
       });
 
       item.append(award);
     }
+
 
     if (!ticket.reward_claimed && ticket.stamps_earned === 5) {
       const redeem = document.createElement('button');
@@ -118,11 +203,15 @@ async function refresh() {
         redeem.disabled = true;
 
         try {
-          await adminRequest('redeem', { ticket_id: ticket.id });
+          await adminRequest('redeem', {
+            ticket_id: ticket.id
+          });
+
           await refresh();
           status('Reward marked as claimed!');
-        } catch (e) {
-          status(e.message);
+
+        } catch (error) {
+          status(error.message);
           redeem.disabled = false;
         }
       });
@@ -130,10 +219,10 @@ async function refresh() {
       item.append(redeem);
     }
 
-    // REGENERATE TICKET CODE
     const rotate = document.createElement('button');
     rotate.type = 'button';
     rotate.textContent = '↻ Regenerate code';
+    rotate.style.marginLeft = '8px';
 
     rotate.addEventListener('click', async () => {
       const confirmed = confirm(
@@ -158,8 +247,8 @@ async function refresh() {
         await refresh();
 
         status(
-          'Replacement code created! Copy it now. ' +
-          'The old code no longer works. ♡'
+          'Replacement code created and saved! ♡ ' +
+          'The old code no longer works.'
         );
 
         $('newCode').scrollIntoView({
@@ -167,8 +256,8 @@ async function refresh() {
           block: 'center'
         });
 
-      } catch (e) {
-        status(e.message);
+      } catch (error) {
+        status(error.message);
       } finally {
         rotate.disabled = false;
       }
@@ -199,8 +288,8 @@ $('adminLogin').addEventListener('submit', async e => {
     showLogin(true);
     await refresh();
 
-  } catch (e) {
-    status(e.message);
+  } catch (error) {
+    status(error.message);
   } finally {
     button.disabled = false;
   }
@@ -215,12 +304,14 @@ $('signOut').addEventListener('click', async () => {
 $('environment').addEventListener('change', () => {
   $('newCode').hidden = true;
   lastCode = '';
-  refresh().catch(e => status(e.message));
+
+  refresh().catch(error => status(error.message));
 });
 
 $('refreshTickets').addEventListener('click', () => {
-  refresh().catch(e => status(e.message));
+  refresh().catch(error => status(error.message));
 });
+
 
 $('createTicket').addEventListener('submit', async e => {
   e.preventDefault();
@@ -240,16 +331,21 @@ $('createTicket').addEventListener('submit', async e => {
 
     await refresh();
 
-    status('Ticket created! Save its code before leaving this page.');
+    status(
+      'Ticket created! Its code is securely saved. ♡'
+    );
 
-  } catch (err) {
-    status(err.message);
+  } catch (error) {
+    status(error.message);
   } finally {
     button.disabled = false;
   }
 });
 
+
 $('copyCode').addEventListener('click', async () => {
+  if (!lastCode) return;
+
   try {
     await navigator.clipboard.writeText(lastCode);
     status('Ticket code copied! ♡');
@@ -263,5 +359,5 @@ const { data: { session } } = await supabase.auth.getSession();
 showLogin(Boolean(session));
 
 if (session) {
-  refresh().catch(e => status(e.message));
+  refresh().catch(error => status(error.message));
 }
