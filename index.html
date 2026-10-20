@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,50 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pixel Loyalty Card</title>
   <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script>
   <script src="script.js" defer></script>
 </head>
-
 <body>
+  <section class="access-panel" id="accessPanel">
+    <h1>♡ YOUR LOYALTY CARD ♡</h1>
+    <p>Enter your special ticket code to see your hearts!</p>
+    <form id="ticketForm">
+      <label for="ticketCode">Your ticket code</label>
+      <input id="ticketCode" name="ticketCode" type="text" autocomplete="off" spellcheck="false" required placeholder="DL-...">
+      <button type="submit">OPEN MY CARD ♡</button>
+    </form>
+    <p class="status" id="loginStatus" role="status"></p>
+  </section>
 
-  <main class="loyalty-card">
-
-    <img
-      src="delPixlogo.png"
-      class="logo"
-      alt="Delri's gay ass pixel type logo for looking at, its got pixels, and its blue and sparkly kinda. Its pretty don't worry about it."
-    >
-
-    <h2>
-      Scratch to fill the hearts! One commission = 1 heart!
-    </h2>
-
-    <h3>
-      Fill all the hearts to get one free item :)
-    </h3>
-
+  <main class="loyalty-card" id="loyaltyCard" hidden>
+    <img src="delPixlogo.png" class="logo" alt="Delri's sparkly blue pixel logo">
+    <h2>Scratch to fill the hearts! One commission = 1 heart!</h2>
+    <h3>Fill all the hearts to get one free item :)</h3>
+    <p id="stampStatus" class="stamp-status" role="status"></p>
     <div class="stamp-row" id="stampRow"></div>
-
-    <div class="reward">
-      <span>FREE!</span>
-    </div>
-
-    <p class="description">
-      FREE ITEM WILL BE OF AN SD CHARA,
-      EMOTE OR SIMPLE ASSET.
-    </p>
-
+    <div class="reward"><span>FREE!</span></div>
+    <p id="rewardStatus" class="stamp-status"></p>
+    <p class="description">FREE ITEM WILL BE OF AN SD CHARA, EMOTE OR SIMPLE ASSET.</p>
+    <p class="status" id="saveStatus" role="status"></p>
+    <button id="changeTicket" class="subtle-button" type="button">Use a different ticket code</button>
   </main>
 
   <footer class="site-footer">
-    <p>
-      If you like my loyalty card, feel free to ask about
-      getting your own for your commissions!
-    </p>
-
-    <p>
-      Please do not copy my code without consent.
-    </p>
+    <p>If you like my loyalty card, feel free to ask about getting your own for your commissions!</p>
+    <p>Please do not copy my code without consent.</p>
   </footer>
-
 </body>
 </html>

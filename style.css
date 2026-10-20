@@ -1,187 +1,45 @@
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #292034; font-family: monospace; }
+.loyalty-card { width: min(95vw, 850px); min-height: 450px; padding: 30px 20px; text-align: center; color: #762f91; background: linear-gradient(120deg, #d6d0d0, #d6b7f4); border: 5px solid white; }
+.logo { display: block; width: 230px; max-width: 100%; height: auto; margin: 0 auto 25px; image-rendering: pixelated; }
+h2 { margin: 0 0 15px; font-size: clamp(13px, 2.5vw, 23px); letter-spacing: 2px; }
+h3 { margin: 0 0 25px; font-size: clamp(12px, 2vw, 18px); letter-spacing: 1px; }
+.stamp-row { display: flex; justify-content: center; gap: 12px; margin: 20px auto 30px; }
+.stamp { position: relative; width: 105px; min-width: 0; aspect-ratio: 1; flex-shrink: 1; }
+.pink-heart, .scratch-layer { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
+.pink-heart { object-fit: contain; }
+.scratch-layer { cursor: crosshair; touch-action: none; }
+.reward { width: 110px; height: 90px; margin: 20px auto; display: grid; place-items: center; background: #d95390; color: white; font-size: 27px; font-weight: bold; clip-path: polygon(20% 0%, 40% 0%, 40% 12%, 60% 12%, 60% 0%, 80% 0%, 80% 12%, 100% 12%, 100% 55%, 85% 55%, 85% 75%, 65% 75%, 50% 100%, 35% 75%, 15% 75%, 15% 55%, 0% 55%, 0% 12%, 20% 12%); }
+.description { margin-top: 25px; font-size: 13px; letter-spacing: 1px; }
+.site-footer { width: min(95vw, 850px); margin: 15px auto; padding: 12px 20px; text-align: center; font-family: monospace; font-size: 11px; color: #bfa8d3; }
+.site-footer p { margin: 5px 0; }
+@media (max-width: 600px) { .loyalty-card { padding: 20px 10px; } .logo { width: 180px; } .stamp-row { gap: 5px; } .description { font-size: 11px; } .site-footer { font-size: 10px; } }
 
-* {
-  box-sizing: border-box;
-}
 
-body {
-  margin: 0;
-  min-height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  background: #292034;
-  font-family: monospace;
-}
-
-.loyalty-card {
-  width: min(95vw, 850px);
-  min-height: 450px;
-  padding: 30px 20px;
-
-  text-align: center;
+/* ACCESS + LIVE TICKET CONTROLS */
+[hidden] { display: none !important; }
+.access-panel, .admin-panel {
+  width: min(95vw, 650px);
+  padding: 30px 25px;
+  border: 5px solid #fff;
+  background: linear-gradient(120deg, #d6d0d0, #d6b7f4);
   color: #762f91;
-
-  background: linear-gradient(
-    120deg,
-    #d6d0d0,
-    #d6b7f4
-  );
-
-  border: 5px solid white;
-}
-
-/* LOGO */
-
-.logo {
-  display: block;
-  width: 230px;
-  max-width: 100%;
-  height: auto;
-  margin: 0 auto 25px;
-
-  image-rendering: pixelated;
-}
-
-/* HEADINGS */
-
-h2 {
-  margin: 0 0 15px;
-
-  font-size: clamp(13px, 2.5vw, 23px);
-  letter-spacing: 2px;
-}
-
-h3 {
-  margin: 0 0 25px;
-
-  font-size: clamp(12px, 2vw, 18px);
-  letter-spacing: 1px;
-}
-
-/* STAMP HEARTS */
-
-.stamp-row {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-
-  margin: 20px auto 30px;
-}
-
-.stamp {
-  position: relative;
-
-  width: 105px;
-  min-width: 0;
-  aspect-ratio: 1;
-
-  flex-shrink: 1;
-}
-
-.pink-heart {
-  position: absolute;
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: contain;
-  image-rendering: pixelated;
-}
-
-.scratch-layer {
-  position: absolute;
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  cursor: crosshair;
-  touch-action: none;
-
-  image-rendering: pixelated;
-}
-
-/* FREE REWARD HEART */
-
-.reward {
-  width: 110px;
-  height: 90px;
-
-  margin: 20px auto;
-
-  display: grid;
-  place-items: center;
-
-  background: #d95390;
-  color: white;
-
-  font-size: 27px;
-  font-weight: bold;
-
-  clip-path: polygon(
-    20% 0%, 40% 0%, 40% 12%,
-    60% 12%, 60% 0%, 80% 0%,
-    80% 12%, 100% 12%, 100% 55%,
-    85% 55%, 85% 75%, 65% 75%,
-    50% 100%, 35% 75%, 15% 75%,
-    15% 55%, 0% 55%, 0% 12%,
-    20% 12%
-  );
-}
-
-/* DESCRIPTION */
-
-.description {
-  margin-top: 25px;
-
-  font-size: 13px;
-  letter-spacing: 1px;
-}
-
-/* FOOTER */
-
-.site-footer {
-  width: min(95vw, 850px);
-
-  margin: 15px auto;
-  padding: 12px 20px;
-
   text-align: center;
-  font-family: monospace;
-  font-size: 11px;
-
-  color: #bfa8d3;
 }
-
-.site-footer p {
-  margin: 5px 0;
-}
-
-/* MOBILE */
-
-@media (max-width: 600px) {
-
-  .loyalty-card {
-    padding: 20px 10px;
-  }
-
-  .logo {
-    width: 180px;
-  }
-
-  .stamp-row {
-    gap: 5px;
-  }
-
-  .description {
-    font-size: 11px;
-  }
-
-  .site-footer {
-    font-size: 10px;
-  }
-}
+.access-panel h1, .admin-panel h1 { font-size: clamp(17px,3vw,26px); }
+.access-panel form, .admin-panel form { display: grid; gap: 10px; margin: 20px auto; max-width: 390px; }
+input, select, button { font: inherit; }
+input, select { min-width: 0; padding: 11px; border: 2px solid #9863b1; border-radius: 4px; }
+button { padding: 11px 15px; background: #d95390; color: #fff; border: 2px solid #fff; cursor: pointer; font-weight: bold; }
+button:disabled { opacity: .6; cursor: wait; }
+button:hover:not(:disabled) { background: #aa3d79; }
+.subtle-button { font-size: 11px; margin-top: 12px; }
+.status { min-height: 1.5em; font-size: 12px; overflow-wrap: anywhere; }
+.stamp-status { font-size: 14px; font-weight: bold; }
+.stamp.locked { opacity: .48; filter: grayscale(.7); }
+.admin-panel { width: min(95vw, 850px); margin: 24px auto; }
+.admin-panel section { border-top: 2px dashed #9863b1; padding-top: 14px; margin-top: 22px; }
+.admin-panel .ticket-item { text-align: left; padding: 14px; margin: 12px 0; border: 2px solid #fff; background: #f7eafa; overflow-wrap: anywhere; }
+.admin-panel .ticket-item button { margin: 5px 5px 0 0; }
+.admin-panel .new-code { padding: 12px; border: 2px dashed #762f91; background: #fff; overflow-wrap: anywhere; }
+.admin-panel .new-code code { display: block; margin: 8px 0; user-select: all; }

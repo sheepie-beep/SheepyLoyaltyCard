@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delri's Loyalty Admin ♡</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script>
+  <script type="module" src="admin.js"></script>
+</head>
+<body>
+  <main class="admin-panel">
+    <img src="delPixlogo.png" class="logo" alt="Delri's pixel logo">
+    <h1>♡ LOYALTY ADMIN ♡</h1>
+    <section id="loginSection">
+      <h2>Admin sign in</h2>
+      <form id="adminLogin">
+        <label for="adminEmail">Email</label>
+        <input type="email" id="adminEmail" required autocomplete="username">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" required autocomplete="current-password">
+        <button type="submit">SIGN IN ♡</button>
+      </form>
+    </section>
+    <div id="adminControls" hidden>
+      <button type="button" id="signOut">Sign out</button>
+      <section>
+        <h2>Choose ticket collection</h2>
+        <label for="environment">Environment</label>
+        <select id="environment">
+          <option value="dev">Developer testing (safe playground)</option>
+          <option value="live">Real customer tickets</option>
+        </select>
+        <button type="button" id="refreshTickets">Refresh tickets</button>
+      </section>
+      <section>
+        <h2>Create a ticket ♡</h2>
+        <form id="createTicket">
+          <label for="customerLabel">Customer name or nickname</label>
+          <input id="customerLabel" required maxlength="100" placeholder="Customer nickname">
+          <button type="submit">CREATE TICKET</button>
+        </form>
+        <div id="newCode" class="new-code" hidden>
+          <strong>Copy this code NOW! It cannot be recovered later.</strong>
+          <code id="generatedCode"></code>
+          <button type="button" id="copyCode">Copy ticket code</button>
+        </div>
+      </section>
+      <section>
+        <h2>Customer tickets</h2>
+        <div id="ticketList"></div>
+      </section>
+    </div>
+    <p id="adminStatus" class="status" role="status"></p>
+  </main>
+</body>
+</html>
